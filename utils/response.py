@@ -1,7 +1,7 @@
 import pickle
 
 class Response(object):
-    def __init__(self, resp_dict):
+    def __init__(self, resp_dict, headers): # added headers formal param
         self.url = resp_dict["url"]
         self.status = resp_dict["status"]
         self.error = resp_dict["error"] if "error" in resp_dict else None
@@ -12,3 +12,7 @@ class Response(object):
                 None)
         except TypeError:
             self.raw_response = None
+
+
+        # added, remove if cannot
+        self.headers = headers
