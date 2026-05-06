@@ -5,6 +5,7 @@ from utils.download import download
 from utils import get_logger
 import scraper
 import time
+import custom_store
 
 
 class Worker(Thread):
@@ -22,6 +23,68 @@ class Worker(Thread):
             tbd_url = self.frontier.get_tbd_url()
             if not tbd_url:
                 self.logger.info("Frontier is empty. Stopping Crawler.")
+
+
+
+                ####
+                print("Number of unique pages crawled: " + str(len(custom_store.unique_pages_crawled)))
+                print("Number of unique pages found: " + str(len(custom_store.unique_pages_found)))
+                print("Longest Page: " + custom_store.longest_page + " - ")
+                print("Raw Content Size: " + str(custom_store.longest_page_len))
+                print("Header Size: " + str(custom_store.longest_page_header))
+            
+                ct = 0
+                for pair in sorted(custom_store.word_dict.items(), key=lambda item: item[1], reverse = True):
+                    print(f"{ct}.{pair[0]}\t{pair[1]}")
+                    ct += 1
+                    if (ct > 50):
+                        break
+
+              
+            
+                print("crawled subdomains:")
+                for pair in sorted(custom_store.crawled_subdomains.items()):                     
+                    print(f"{pair[0]}, {pair[1]}")
+            
+                print("found subdomains:")
+                for pair in sorted(custom_store.found_subdomains.items()): 
+                    print(f"{pair[0]}, {pair[1]}")
+
+
+                self.logger.info("Number of unique pages crawled: " + str(len(custom_store.unique_pages_crawled)))
+                self.logger.info("Number of unique pages found: " + str(len(custom_store.unique_pages_found)))
+                self.logger.info("Longest Page: " + custom_store.longest_page + " - ")
+                self.logger.info("Raw Content Size: " + str(custom_store.longest_page_len))
+                self.logger.info("Header Size: " + str(custom_store.longest_page_header))
+                self.logger.info("Word Size: " + str(custom_store.longest_page_words))
+                self.logger.info(custom_store.longest_page_list)
+            
+                ct = 1
+                for pair in sorted(custom_store.word_dict.items(), key=lambda item: item[1], reverse = True):
+                    self.logger.info(f"{ct}. {pair[0]}\t{pair[1]}")
+                    ct += 1
+                    if (ct > 50):
+                        break
+            
+                
+               
+                
+                
+                self.logger.info("crawled subdomains:")
+                
+                    
+                for pair in sorted(custom_store.crawled_subdomains.items()): 
+                    self.logger.info(f"{pair[0]}, {pair[1]}")
+            
+                self.logger.info("found subdomains:")
+                for pair in sorted(custom_store.found_subdomains.items()): 
+                    self.logger.info(f"{pair[0]}, {pair[1]}")
+
+                #####
+
+
+
+                
                 break
             resp = download(tbd_url, self.config, self.logger)
             self.logger.info(
